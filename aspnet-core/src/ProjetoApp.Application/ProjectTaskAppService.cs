@@ -82,19 +82,16 @@ public class ProjectTaskAppService :
         return new PagedResultDto<ProjectTaskDto>(totalCount, dtos);
     }
 
-    //protected override async Task<ProjectTask> MapToEntityAsync(CreateUpdateProjectTaskDto createInput)
-    //{
-    //    // Verifica se o projeto existe
-    //    var project = await _projectRepository.GetAsync(createInput.ProjectId);
-
-    //    return new ProjectTask(
-    //        GuidGenerator.Create(),
-    //        createInput.ProjectId,
-    //        createInput.Title,
-    //        createInput.Description,
-    //        createInput.DueDate
-    //    );
-    //}
+    protected override async Task<ProjectTask> MapToEntityAsync(CreateUpdateProjectTaskDto createInput)
+    {
+        // Usa o ProjectTaskManager para criar a entidade
+        return await _projectTaskManager.CreateAsync(
+            createInput.ProjectId,
+            createInput.Title,
+            createInput.Description,
+            createInput.DueDate
+        );
+    }
 
     protected override async Task<ProjectTask> GetEntityByIdAsync(Guid id)
     {
