@@ -1,0 +1,30 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+.vs/
+_ReSharper*/
+*.ReSharper*
+.idea/
+*.sln.iml
+
+# Angular
+/angular/dist
+/angular/node_modules
+/angular/.angular/cache
+.sass-cache/
+/angular/connect.lock
+/angular/coverage
+/angular/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/angular/typings
+.env
+
+# Outros
+*.log
+appsettings.Development.json
+appsettings.Production.json
