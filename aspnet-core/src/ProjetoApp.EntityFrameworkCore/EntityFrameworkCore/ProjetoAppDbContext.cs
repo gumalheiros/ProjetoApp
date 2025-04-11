@@ -57,6 +57,8 @@ public class ProjetoAppDbContext :
     #endregion
     public DbSet<Project> Projects { get; set; }
     public DbSet<ProjectTask> ProjectTasks { get; set; }
+    public DbSet<TaskHistory> TaskHistories { get; set; }
+    public DbSet<TaskComment> TaskComments { get; set; }
 
     public ProjetoAppDbContext(DbContextOptions<ProjetoAppDbContext> options)
         : base(options)
@@ -130,6 +132,14 @@ public class ProjetoAppDbContext :
             b.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>();
+
+            b.HasMany<TaskHistory>()
+             .WithOne(h => h.Task)
+             .HasForeignKey(h => h.TaskId);
+
+            b.HasMany<TaskComment>()
+             .WithOne(c => c.Task)
+             .HasForeignKey(c => c.TaskId);
 
             b.HasIndex(x => x.ProjectId);
         });

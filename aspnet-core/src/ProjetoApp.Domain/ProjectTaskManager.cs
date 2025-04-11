@@ -8,15 +8,23 @@ namespace ProjetoApp.Domain;
 
 public class ProjectTaskManager : DomainService
 {
+    private const int MaxTasksPerProject = 20;
     private readonly IRepository<ProjectTask, Guid> _projectTaskRepository;
     private readonly IRepository<Project, Guid> _projectRepository;
+    private readonly IRepository<TaskHistory, Guid> _taskHistoryRepository;
+    private readonly IRepository<TaskComment, Guid> _taskCommentRepository;
 
     public ProjectTaskManager(
         IRepository<ProjectTask, Guid> projectTaskRepository,
-        IRepository<Project, Guid> projectRepository)
+        IRepository<Project, Guid> projectRepository,
+        IRepository<TaskHistory, Guid> taskHistoryRepository,
+        IRepository<TaskComment, Guid> taskCommentRepository
+        )
     {
         _projectTaskRepository = projectTaskRepository;
         _projectRepository = projectRepository;
+        _taskHistoryRepository = taskHistoryRepository;
+        _taskCommentRepository = taskCommentRepository;
     }
 
     public async Task<ProjectTask> CreateAsync(
@@ -45,6 +53,16 @@ public class ProjectTaskManager : DomainService
             );
         }
 
+        // Validar limite de tarefas
+        var taskCount = await _projectTaskRepository.CountAsync(t => t.ProjectId == projectId);
+        if (taskCount >= MaxTasksPerProject)
+        {
+            throw new BusinessException(
+                "ProjectTaskDomainErrorCodes.TaskLimitExceeded",
+                $"Project has reached the maximum limit of {MaxTasksPerProject} tasks"
+            );
+        }
+
         // Criar a nova tarefa
         var task = new ProjectTask(
             GuidGenerator.Create(),
@@ -61,13 +79,24 @@ public class ProjectTaskManager : DomainService
         return task;
     }
 
-    public async Task<ProjectTask> UpdateStatusAsync(Guid id, ProjectTaskStatus status)
+    public async Task<ProjectTask> UpdateStatusAsync(Guid id, ProjectTaskStatus status, Guid userId)
     {
         var task = await _projectTaskRepository.GetAsync(id);
 
-        ValidateStatusTransition(task.Status, status);
+        var oldStatus = task.Status;
+        ValidateStatusTransition(oldStatus, status);
 
         task.UpdateStatus(status);
+
+        // Registrar a mudança no histórico
+        await AddHistoryEntryAsync(
+            id,
+            "Status",
+            oldStatus.ToString(),
+            status.ToString(),
+            userId,
+            "Update"
+        );
 
         return task;
     }
@@ -99,4 +128,51 @@ public class ProjectTaskManager : DomainService
             );
         }
     }
+
+    public async Task<TaskComment> AddCommentAsync(Guid taskId, string content, Guid userId)
+    {
+        var task = await _projectTaskRepository.GetAsync(taskId);
+
+        var comment = new TaskComment(
+            GuidGenerator.Create(),
+            taskId,
+            content
+        );
+
+        await _taskCommentRepository.InsertAsync(comment);
+
+        // Registrar o comentário no histórico
+        await AddHistoryEntryAsync(
+            taskId,
+            "Comment",
+            null,
+            content,
+            userId,
+            "Comment"
+        );
+
+        return comment;
+    }
+
+    private async Task AddHistoryEntryAsync(
+        Guid taskId,
+        string fieldName,
+        string oldValue,
+        string newValue,
+        Guid userId,
+        string changeType)
+    {
+        var history = new TaskHistory(
+            GuidGenerator.Create(),
+            taskId,
+            fieldName,
+            oldValue,
+            newValue,
+            userId,
+            changeType
+        );
+
+        await _taskHistoryRepository.InsertAsync(history);
+    }
+
 }

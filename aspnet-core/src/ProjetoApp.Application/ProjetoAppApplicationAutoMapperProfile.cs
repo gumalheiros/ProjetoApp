@@ -16,5 +16,7 @@ public class ProjetoAppApplicationAutoMapperProfile : Profile
         CreateMap<ProjectTask, ProjectTaskDto>();
         CreateMap<CreateUpdateProjectDto, Project>();
         CreateMap<CreateUpdateProjectTaskDto, ProjectTask>();
+        CreateMap<TaskHistory, TaskHistoryDto>();
+        CreateMap<TaskComment, TaskCommentDto>();
     }
 }

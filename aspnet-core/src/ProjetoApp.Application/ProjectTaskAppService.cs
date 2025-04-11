@@ -25,23 +25,28 @@ public class ProjectTaskAppService :
 {
     private readonly IRepository<Project, Guid> _projectRepository;
     private readonly ProjectTaskManager _projectTaskManager;
+    private readonly IRepository<TaskHistory, Guid> _taskHistoryRepository;
+    private readonly IRepository<TaskComment, Guid> _taskCommentRepository;
 
     public ProjectTaskAppService(
         IRepository<ProjectTask, Guid> repository,
         IRepository<Project, Guid> projectRepository,
-        ProjectTaskManager projectTaskManager)
+        ProjectTaskManager projectTaskManager,
+        IRepository<TaskHistory, Guid> taskHistoryRepository,
+        IRepository<TaskComment, Guid> taskCommentRepository)
         : base(repository)
     {
         _projectRepository = projectRepository;
         _projectTaskManager = projectTaskManager;
-
+        _taskHistoryRepository = taskHistoryRepository;
+        _taskCommentRepository = taskCommentRepository;
     }
 
     public async Task<ProjectTaskDto> UpdateStatusAsync(Guid id, ProjectTaskStatus status)
     {
         await CheckUpdatePolicyAsync();
 
-        var task = await _projectTaskManager.UpdateStatusAsync(id, status);
+        var task = await _projectTaskManager.UpdateStatusAsync(id, status, CurrentUser.Id.Value);
         
         await Repository.UpdateAsync(task);
 
@@ -105,4 +110,36 @@ public class ProjectTaskAppService :
     {
         return query.OrderByDescending(x => x.DueDate);
     }
+
+    public async Task<List<TaskHistoryDto>> GetHistoryAsync(Guid taskId)
+    {
+        var history = await _taskHistoryRepository
+            .GetListAsync(h => h.TaskId == taskId);
+
+        history = history.OrderByDescending(h => h.ChangedAt).ToList();
+
+        return ObjectMapper.Map<List<TaskHistory>, List<TaskHistoryDto>>(history);
+    }
+
+    public async Task<TaskCommentDto> AddCommentAsync(Guid taskId, CreateTaskCommentDto input)
+    {
+        var comment = await _projectTaskManager.AddCommentAsync(
+            taskId,
+            input.Content,
+            CurrentUser.Id.Value
+        );
+
+        return ObjectMapper.Map<TaskComment, TaskCommentDto>(comment);
+    }
+
+    public async Task<List<TaskCommentDto>> GetCommentsAsync(Guid taskId)
+    {
+        var comments = await _taskCommentRepository
+            .GetListAsync(c => c.TaskId == taskId);
+
+        comments = comments.OrderByDescending(c => c.CreationTime).ToList();
+
+        return ObjectMapper.Map<List<TaskComment>, List<TaskCommentDto>>(comments);
+    }
+
 }
