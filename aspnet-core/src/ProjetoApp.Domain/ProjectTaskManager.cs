@@ -1,11 +1,10 @@
-using ProjetoApp.Domain;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 
-namespace ProjetoApp.Projects;
+namespace ProjetoApp.Domain;
 
 public class ProjectTaskManager : DomainService
 {
@@ -24,7 +23,8 @@ public class ProjectTaskManager : DomainService
         Guid projectId,
         string title,
         string description,
-        DateTime dueDate)
+        DateTime dueDate,
+        TaskPriority priority)
     {
         // Validar se o projeto existe
         var project = await _projectRepository.GetAsync(projectId);
@@ -51,7 +51,8 @@ public class ProjectTaskManager : DomainService
             projectId,
             title,
             description,
-            dueDate
+            dueDate,
+            priority
         );
 
         // Já começa com status Pending por padrão
@@ -79,6 +80,22 @@ public class ProjectTaskManager : DomainService
             throw new BusinessException(
                 "ProjectTaskDomainErrorCodes.InvalidStatusTransition",
                 "Cannot change status from Completed to Pending"
+            );
+        }
+    }
+
+    public async Task ValidateProjectDeletionAsync(Guid projectId)
+    {
+        var pendingTasks = await _projectTaskRepository.CountAsync(
+            task => task.ProjectId == projectId &&
+                   task.Status != ProjectTaskStatus.Completed
+        );
+
+        if (pendingTasks > 0)
+        {
+            throw new BusinessException(
+                "ProjectDomainErrorCodes.ProjectHasPendingTasks",
+                "Cannot delete project with pending tasks. Please complete or remove all tasks first."
             );
         }
     }

@@ -11,6 +11,7 @@ public class ProjectTask : FullAuditedEntity<Guid>
     public string Description { get; private set; }
     public DateTime DueDate { get; private set; }
     public ProjectTaskStatus Status { get; private set; }
+    public TaskPriority Priority { get; private set; }
     public Guid ProjectId { get; private set; }
     public virtual Project Project { get; private set; }
 
@@ -21,13 +22,16 @@ public class ProjectTask : FullAuditedEntity<Guid>
         Guid projectId,
         string title,
         string description,
-        DateTime dueDate) : base(id)
+        DateTime dueDate,
+        TaskPriority priority) : base(id)
     {
         ProjectId = projectId;
         SetTitle(title);
         SetDescription(description);
         SetDueDate(dueDate);
         Status = ProjectTaskStatus.Pending;
+        Priority = priority;
+
     }
 
     internal void SetTitle(string title)

@@ -89,7 +89,8 @@ public class ProjectTaskAppService :
             createInput.ProjectId,
             createInput.Title,
             createInput.Description,
-            createInput.DueDate
+            createInput.DueDate,
+            createInput.Priority
         );
     }
 

@@ -1,3 +1,4 @@
+using ProjetoApp.Domain;
 using ProjetoApp.Domain.Shared;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -18,4 +19,7 @@ public class CreateUpdateProjectTaskDto
 
     [Required]
     public Guid ProjectId { get; set; }
+
+    [Required]
+    public TaskPriority Priority { get; set; }
 }

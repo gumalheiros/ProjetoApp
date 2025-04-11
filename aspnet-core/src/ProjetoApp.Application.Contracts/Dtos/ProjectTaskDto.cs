@@ -11,4 +11,5 @@ public class ProjectTaskDto : AuditedEntityDto<Guid>
     public DateTime DueDate { get; set; }
     public ProjectTaskStatus Status { get; set; }
     public Guid ProjectId { get; set; }
+    public TaskPriority Priority { get; set; }
 }
