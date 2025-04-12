@@ -8,9 +8,15 @@ public class ProjetoAppPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(ProjetoAppPermissions.GroupName);
-        //Define your own permissions here. Example:
-        //myGroup.AddPermission(ProjetoAppPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+        var projectGroup = context.AddGroup(ProjetoAppPermissions.GroupName);
+
+        var projectsPermission = projectGroup.AddPermission(ProjetoAppPermissions.Projects.Default);
+        projectsPermission.AddChild(ProjetoAppPermissions.Projects.Create);
+        projectsPermission.AddChild(ProjetoAppPermissions.Projects.Edit);
+        projectsPermission.AddChild(ProjetoAppPermissions.Projects.Delete);
+        projectsPermission.AddChild(ProjetoAppPermissions.Projects.ViewReports, L("Permission:ViewReports"));
+
     }
 
     private static LocalizableString L(string name)

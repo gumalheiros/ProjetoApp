@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProjetoApp.Projects.Dtos;
 using ProjetoApp.Domain;
+using ProjetoApp.Dtos;
 
 namespace ProjetoApp;
 
@@ -18,5 +19,6 @@ public class ProjetoAppApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateProjectTaskDto, ProjectTask>();
         CreateMap<TaskHistory, TaskHistoryDto>();
         CreateMap<TaskComment, TaskCommentDto>();
+        CreateMap<TaskPerformanceReport, TaskPerformanceReportDto>();
     }
 }

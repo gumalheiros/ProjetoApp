@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ProjetoApp.Domain;
+using ProjetoApp.Dtos;
+using ProjetoApp.Permissions;
 using ProjetoApp.Projects.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -27,19 +29,22 @@ public class ProjectTaskAppService :
     private readonly ProjectTaskManager _projectTaskManager;
     private readonly IRepository<TaskHistory, Guid> _taskHistoryRepository;
     private readonly IRepository<TaskComment, Guid> _taskCommentRepository;
+    private readonly ProjectTaskReportManager _reportManager;
 
     public ProjectTaskAppService(
         IRepository<ProjectTask, Guid> repository,
         IRepository<Project, Guid> projectRepository,
         ProjectTaskManager projectTaskManager,
         IRepository<TaskHistory, Guid> taskHistoryRepository,
-        IRepository<TaskComment, Guid> taskCommentRepository)
+        IRepository<TaskComment, Guid> taskCommentRepository,
+        ProjectTaskReportManager reportManager)
         : base(repository)
     {
         _projectRepository = projectRepository;
         _projectTaskManager = projectTaskManager;
         _taskHistoryRepository = taskHistoryRepository;
         _taskCommentRepository = taskCommentRepository;
+        _reportManager = reportManager;
     }
 
     public async Task<ProjectTaskDto> UpdateStatusAsync(Guid id, ProjectTaskStatus status)
@@ -140,6 +145,18 @@ public class ProjectTaskAppService :
         comments = comments.OrderByDescending(c => c.CreationTime).ToList();
 
         return ObjectMapper.Map<List<TaskComment>, List<TaskCommentDto>>(comments);
+    }
+
+    [Authorize(ProjetoAppPermissions.Projects.ViewReports)]
+    public async Task<List<TaskPerformanceReportDto>> GetPerformanceReportAsync(DateTime? startDate = null, DateTime? endDate = null)
+    {
+        // Define período padrão de 30 dias se não especificado
+        var end = endDate ?? Clock.Now;
+        var start = startDate ?? end.AddDays(-30);
+
+        var report = await _reportManager.GenerateUserPerformanceReportAsync(start, end);
+
+        return ObjectMapper.Map<List<TaskPerformanceReport>, List<TaskPerformanceReportDto>>(report);
     }
 
 }
