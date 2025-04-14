@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Modularity;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Modularity;
 
 namespace ProjetoApp;
 
@@ -8,5 +9,4 @@ namespace ProjetoApp;
 )]
 public class ProjetoAppDomainTestModule : AbpModule
 {
-
 }

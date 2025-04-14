@@ -40,16 +40,16 @@ public class ProjectTaskManager : DomainService
         {
             throw new BusinessException(
                 "ProjectTaskDomainErrorCodes.ProjectNotFound",
-                "Project not found"
+                "Projeto não encontrado"
             );
         }
 
         // Validar a data de vencimento
-        if (dueDate < Clock.Now)
+        if (dueDate < DateTime.UtcNow)
         {
             throw new BusinessException(
                 "ProjectTaskDomainErrorCodes.InvalidDueDate",
-                "Due date cannot be in the past"
+                "A data de vencimento não pode estar no passado"
             );
         }
 
@@ -59,13 +59,13 @@ public class ProjectTaskManager : DomainService
         {
             throw new BusinessException(
                 "ProjectTaskDomainErrorCodes.TaskLimitExceeded",
-                $"Project has reached the maximum limit of {MaxTasksPerProject} tasks"
+                $"O projeto atingiu o limite máximo de {MaxTasksPerProject} tarefas"
             );
         }
 
         // Criar a nova tarefa
         var task = new ProjectTask(
-            GuidGenerator.Create(),
+            Guid.NewGuid(),
             projectId,
             title,
             description,
@@ -73,7 +73,7 @@ public class ProjectTaskManager : DomainService
             priority
         );
 
-        // J� come�a com status Pending por padr�o
+        // Já começa com status Pending por padrão
         await _projectTaskRepository.InsertAsync(task);
 
         return task;
@@ -88,7 +88,7 @@ public class ProjectTaskManager : DomainService
 
         task.UpdateStatus(status);
 
-        // Registrar a mudan�a no hist�rico
+        // Registrar a mudança no histórico
         await AddHistoryEntryAsync(
             id,
             "Status",
@@ -103,12 +103,12 @@ public class ProjectTaskManager : DomainService
 
     private void ValidateStatusTransition(ProjectTaskStatus currentStatus, ProjectTaskStatus newStatus)
     {
-        // Exemplo de regra de neg�cio: n�o pode voltar para Pending se j� estiver Completed
+        // Exemplo de regra de negócio: não pode voltar para Pending se já estiver Completed
         if (currentStatus == ProjectTaskStatus.Completed && newStatus == ProjectTaskStatus.Pending)
         {
             throw new BusinessException(
                 "ProjectTaskDomainErrorCodes.InvalidStatusTransition",
-                "Cannot change status from Completed to Pending"
+                "Não é possível alterar o status de Concluído para Pendente"
             );
         }
     }
@@ -124,7 +124,7 @@ public class ProjectTaskManager : DomainService
         {
             throw new BusinessException(
                 "ProjectDomainErrorCodes.ProjectHasPendingTasks",
-                "Cannot delete project with pending tasks. Please complete or remove all tasks first."
+                "Não é possível excluir o projeto com tarefas pendentes. Por favor, conclua ou remova todas as tarefas primeiro."
             );
         }
     }
@@ -134,14 +134,14 @@ public class ProjectTaskManager : DomainService
         var task = await _projectTaskRepository.GetAsync(taskId);
 
         var comment = new TaskComment(
-            GuidGenerator.Create(),
+            Guid.NewGuid(),
             taskId,
             content
         );
 
         await _taskCommentRepository.InsertAsync(comment);
 
-        // Registrar o coment�rio no hist�rico
+        // Registrar o comentário no histórico
         await AddHistoryEntryAsync(
             taskId,
             "Comment",
@@ -163,7 +163,7 @@ public class ProjectTaskManager : DomainService
         string changeType)
     {
         var history = new TaskHistory(
-            GuidGenerator.Create(),
+            Guid.NewGuid(),
             taskId,
             fieldName,
             oldValue,
