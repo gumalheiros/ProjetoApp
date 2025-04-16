@@ -116,7 +116,7 @@ Com os contêineres em execução, você pode acessar:
 
 - **Servidor**: localhost,1434
 - **Usuário**: sa
-- **Senha**: DevPassword123!
+- **Senha**: StrongPassword123!
 - **Banco de Dados**: ProjetoApp_Dev
 
 ### Parando os Contêineres
