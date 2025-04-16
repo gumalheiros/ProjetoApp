@@ -1,0 +1,73 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: projetoapp-sqlserver
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPassword123!
+    ports:
+      - "1434:1433"
+    networks:
+      - projetoapp-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "StrongPassword123!" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+    restart: unless-stopped
+
+  migrator:
+    build:
+      context: .
+      dockerfile: src/ProjetoApp.DbMigrator/Dockerfile
+    container_name: projetoapp-migrator
+    environment:
+      - ConnectionStrings__Default=Server=sqlserver,1433;Database=ProjetoApp;User=sa;Password=StrongPassword123!;TrustServerCertificate=True;ConnectRetryCount=10;ConnectRetryInterval=10
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - projetoapp-network
+
+  api:
+    build:
+      context: .
+      dockerfile: src/ProjetoApp.HttpApi.Host/Dockerfile
+    container_name: projetoapp-api
+    ports:
+      - "44396:443"
+      - "44395:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44396
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=8575a179-ea81-4064-b3de-ada8954a24e7
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__Default=Server=sqlserver,1433;Database=ProjetoApp;User=sa;Password=StrongPassword123!;TrustServerCertificate=True;ConnectRetryCount=10;ConnectRetryInterval=10
+      - App__SelfUrl=https://localhost:44396
+      - App__ClientUrl=http://localhost:4200
+      - App__CorsOrigins=https://*.ProjetoApp.com,http://localhost:4200,http://localhost:44395
+      - AuthServer__Authority=https://localhost:44396
+      - Abp__Timing__TimeZone=America/Sao_Paulo
+      - Redis__Configuration=
+      - Redis__IsEnabled=false
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+    networks:
+      - projetoapp-network
+    restart: unless-stopped
+
+networks:
+  projetoapp-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:
