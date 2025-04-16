@@ -14,6 +14,7 @@ A solução segue uma arquitetura em camadas (Layered Architecture) conforme os 
 - **Camada de Apresentação/API** (`ProjetoApp.HttpApi.Host`): Expõe as funcionalidades da aplicação para consumo externo através de APIs.
 
 O projeto também inclui:
+
 - **Migrador de Banco de Dados** (`ProjetoApp.DbMigrator`): Aplicativo de console que aplica migrações e inicializa dados.
 - **Testes** (`ProjetoApp.Domain.Tests` e outros): Testes unitários e de integração para validar as funcionalidades.
 
@@ -21,9 +22,9 @@ O projeto também inclui:
 
 Para executar a aplicação, você precisa ter instalado:
 
-* [.NET 9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v20.11+](https://nodejs.org/pt-br/) (para o frontend)
-* [Docker](https://www.docker.com/products/docker-desktop/) (opcional, para execução containerizada)
+- [.NET 9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
+- [Node v20.11+](https://nodejs.org/pt-br/) (para o frontend)
+- [Docker](https://www.docker.com/products/docker-desktop/) (opcional, para execução containerizada)
 
 ## Como Executar os Testes
 
@@ -108,8 +109,8 @@ docker-compose logs -f
 
 Com os contêineres em execução, você pode acessar:
 
-- **API (HTTPS)**: https://localhost:5001
-- **API (HTTP)**: http://localhost:5000
+- **API (HTTPS)**: <https://localhost:5001>
+- **API (HTTP)**: <http://localhost:5000>
 
 ### Acessando o Banco de Dados
 
@@ -136,12 +137,46 @@ docker-compose down -v
 
 A solução vem com configurações que funcionam imediatamente. No entanto, você pode alterar:
 
-* Verifique as `ConnectionStrings` nos arquivos `appsettings.json` nos projetos `ProjetoApp.HttpApi.Host` e `ProjetoApp.DbMigrator` e altere conforme necessário.
+- Verifique as `ConnectionStrings` nos arquivos `appsettings.json` nos projetos `ProjetoApp.HttpApi.Host` e `ProjetoApp.DbMigrator` e altere conforme necessário.
 
 ## Recursos Adicionais
 
 Para saber mais sobre o framework ABP utilizado na aplicação:
 
-* [Tutorial de Desenvolvimento de Aplicação Web](https://abp.io/docs/latest/tutorials/book-store/part-01?UI=Blazor&DB=EF)
-* [Estrutura do Template de Aplicação](https://abp.io/docs/latest/solution-templates/layered-web-application)
-* [Documentação do ABP Framework](https://abp.io/docs/latest)
+- [Tutorial de Desenvolvimento de Aplicação Web](https://abp.io/docs/latest/tutorials/book-store/part-01?UI=Blazor&DB=EF)
+- [Estrutura do Template de Aplicação](https://abp.io/docs/latest/solution-templates/layered-web-application)
+- [Documentação do ABP Framework](https://abp.io/docs/latest)
+
+## Refinamento: Perguntas para o PO
+
+Durante o refinamento de futuras implementações ou melhorias, as seguintes perguntas podem ser feitas ao PO para alinhar expectativas e priorizar entregas:
+
+- Quais são as funcionalidades críticas que ainda não foram implementadas e que podem impactar diretamente os objetivos do negócio?
+
+- Quais são os principais objetivos de experiência do usuário para o sistema, e como podemos garantir que eles sejam atendidos?
+
+- Qual é a visão de longo prazo para este projeto, e como as próximas iterações podem alinhar-se a essa visão?
+
+## Melhorias no Projeto
+
+Durante a análise do projeto, foram identificados os seguintes pontos de melhoria que podem ser implementados para aprimorar a qualidade, escalabilidade e manutenção do sistema:
+
+### 1. Logs e Monitoramento
+- **Por quê?** Atualmente, não há menção de logs estruturados ou monitoramento. Isso é essencial para identificar problemas em produção e garantir a estabilidade do sistema.
+- **Ação:** Implementar logs estruturados com Serilog e configurar monitoramento básico (ex.: Application Insights ou ELK Stack).
+- **Impacto:** Ajuda a detectar e resolver problemas rapidamente, reduzindo o tempo de inatividade.
+
+### 2. Automatização do Deploy
+- **Por quê?** O projeto já usa Docker, mas não há menção de pipelines de CI/CD. Automatizar o deploy melhora a eficiência e reduz erros manuais.
+- **Ação:** Configurar um pipeline básico de CI/CD (ex.: GitHub Actions ou Azure DevOps).
+- **Impacto:** Acelera entregas e garante consistência nos ambientes.
+
+### 3. Cobertura de Testes
+- **Por quê?** Algumas classes têm cobertura de testes baixa (ex.: `TaskComment` e `TaskHistory`). Isso pode levar a bugs não detectados.
+- **Ação:** Priorizar testes para áreas críticas do domínio com baixa cobertura.
+- **Impacto:** Reduz riscos de regressão e melhora a confiança no código.
+
+### 4. Planejamento de Escalabilidade
+- **Por quê?** O projeto pode crescer em número de usuários e dados. Planejar agora evita problemas futuros.
+- **Ação:** Revisar a arquitetura para identificar gargalos e preparar o sistema para escalar (ex.: particionamento de banco, cache).
+- **Impacto:** Garante que o sistema suporte crescimento sem reescritas caras.
