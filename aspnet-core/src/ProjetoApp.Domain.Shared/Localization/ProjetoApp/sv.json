@@ -4,6 +4,19 @@
     "AppName": "MittProjektNamn",
     "Menu:Home": "Hem",
     "Welcome": "Välkommen",
-    "LongWelcomeMessage": "Välkommen till applikationen. Detta är ett startup-projekt baserat på ABP-ramverket. För mer information, besök abp.io."
+    "LongWelcomeMessage": "Välkommen till applikationen. Detta är ett startup-projekt baserat på ABP-ramverket. För mer information, besök abp.io.",
+    "Permission:Customer": "Customer",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:Customer": "MenuCustomer",
+    "Customer": "Customer",
+    "CustomerName": "CustomerName",
+    "CustomerBirthDate": "CustomerBirthDate",
+    "CreateCustomer": "CreateCustomer",
+    "EditCustomer": "EditCustomer",
+    "CustomerDeletionConfirmationMessage": "Are you sure to delete the customer {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter"
   }
 }

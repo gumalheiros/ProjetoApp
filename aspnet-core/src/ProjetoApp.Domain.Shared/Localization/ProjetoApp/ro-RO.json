@@ -4,6 +4,19 @@
     "AppName": "ProjetoApp",
     "Menu:Home": "Acasă",
     "Welcome": "Bun venit",
-    "LongWelcomeMessage": "Bun venit la aplicaţie. Acesta este un proiect de pornire bazat pe framework-ul ABP. Pentru mai multe informaţii, vizitaţi, visit abp.io."
+    "LongWelcomeMessage": "Bun venit la aplicaţie. Acesta este un proiect de pornire bazat pe framework-ul ABP. Pentru mai multe informaţii, vizitaţi, visit abp.io.",
+    "Permission:Customer": "Customer",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:Customer": "MenuCustomer",
+    "Customer": "Customer",
+    "CustomerName": "CustomerName",
+    "CustomerBirthDate": "CustomerBirthDate",
+    "CreateCustomer": "CreateCustomer",
+    "EditCustomer": "EditCustomer",
+    "CustomerDeletionConfirmationMessage": "Are you sure to delete the customer {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter"
   }
 }

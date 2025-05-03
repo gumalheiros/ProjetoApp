@@ -4,6 +4,19 @@
     "AppName": "ProjetoApp",
     "Menu:Home": "Home",
     "Welcome": "Welcome",
-    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Permission:Customer": "Customer",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:Customer": "MenuCustomer",
+    "Customer": "Customer",
+    "CustomerName": "CustomerName",
+    "CustomerBirthDate": "CustomerBirthDate",
+    "CreateCustomer": "CreateCustomer",
+    "EditCustomer": "EditCustomer",
+    "CustomerDeletionConfirmationMessage": "Are you sure to delete the customer {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter"
   }
 }

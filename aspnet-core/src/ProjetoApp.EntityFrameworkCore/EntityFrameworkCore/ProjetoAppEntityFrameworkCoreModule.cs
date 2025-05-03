@@ -1,4 +1,5 @@
-﻿using System;
+using ProjetoApp.Domain;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Uow;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -41,6 +42,7 @@ public class ProjetoAppEntityFrameworkCoreModule : AbpModule
                 /* Remove "includeAllEntities: true" to create
                  * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<Customer, CustomerRepository>();
         });
 
         Configure<AbpDbContextOptions>(options =>

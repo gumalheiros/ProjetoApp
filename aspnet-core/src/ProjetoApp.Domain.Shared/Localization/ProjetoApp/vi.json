@@ -4,6 +4,19 @@
     "AppName": "ProjetoApp",
     "Menu:Home": "Trang chủ",
     "Welcome": "Chào mừng bạn",
-    "LongWelcomeMessage": "Chào mừng bạn đến ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin, hãy truy cập abp.io."
+    "LongWelcomeMessage": "Chào mừng bạn đến ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin, hãy truy cập abp.io.",
+    "Permission:Customer": "Customer",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:Customer": "MenuCustomer",
+    "Customer": "Customer",
+    "CustomerName": "CustomerName",
+    "CustomerBirthDate": "CustomerBirthDate",
+    "CreateCustomer": "CreateCustomer",
+    "EditCustomer": "EditCustomer",
+    "CustomerDeletionConfirmationMessage": "Are you sure to delete the customer {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter"
   }
 }

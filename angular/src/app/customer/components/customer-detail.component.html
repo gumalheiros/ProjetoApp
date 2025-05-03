@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col col-md-6">
+        <h5 class="card-title">
+          {{ (isEditMode ? '::EditCustomer' : '::NewCustomer') | abpLocalization }}
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <label for="name">{{ '::Name' | abpLocalization }} *</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          formControlName="name"
+          [class.is-invalid]="form.get('name').invalid && form.get('name').touched"
+        />
+        <div *ngIf="form.get('name').errors?.required && form.get('name').touched" class="invalid-feedback">
+          {{ '::ThisFieldIsRequired' | abpLocalization }}
+        </div>
+        <div *ngIf="form.get('name').errors?.maxlength && form.get('name').touched" class="invalid-feedback">
+          {{ '::MaxLengthExceeded' | abpLocalization:100 }}
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="birthDate">{{ '::BirthDate' | abpLocalization }}</label>
+        <input
+          type="date"
+          id="birthDate"
+          class="form-control"
+          formControlName="birthDate"
+        />
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-secondary me-2" (click)="navigateToList()">
+          {{ '::Cancel' | abpLocalization }}
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          <i class="fa fa-check me-1"></i>
+          {{ '::Save' | abpLocalization }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

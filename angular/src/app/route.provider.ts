@@ -15,6 +15,14 @@ function configureRoutes(routesService: RoutesService) {
         order: 1,
         layout: eLayoutType.application,
       },
+      {
+        path: '/customer',
+        name: '::Menu:Customers',
+        iconClass: 'fas fa-users',
+        order: 2,
+        layout: eLayoutType.application,
+        requiredPolicy: 'ProjetoApp.Customer'
+      }
     ]);
   };
 }

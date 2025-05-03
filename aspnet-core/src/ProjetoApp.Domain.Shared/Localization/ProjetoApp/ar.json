@@ -4,6 +4,19 @@
     "AppName": "ProjetoApp",
     "Menu:Home": "الصفحة الرئيسية",
     "Welcome": "مرحباً",
-    "LongWelcomeMessage": "مرحبا بكم في التطبيق. هذا مشروع بدء تشغيل يعتمد على إطار عمل ABP. لمزيد من المعلومات ، يرجى زيارة abp.io."
+    "LongWelcomeMessage": "مرحبا بكم في التطبيق. هذا مشروع بدء تشغيل يعتمد على إطار عمل ABP. لمزيد من المعلومات ، يرجى زيارة abp.io.",
+    "Permission:Customer": "Customer",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete",
+    "Menu:Customer": "MenuCustomer",
+    "Customer": "Customer",
+    "CustomerName": "CustomerName",
+    "CustomerBirthDate": "CustomerBirthDate",
+    "CreateCustomer": "CreateCustomer",
+    "EditCustomer": "EditCustomer",
+    "CustomerDeletionConfirmationMessage": "Are you sure to delete the customer {0}?",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "TableFilter": "TableFilter"
   }
 }

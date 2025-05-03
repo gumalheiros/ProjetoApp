@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProjetoApp.Domain;
 using ProjetoApp.Domain.Shared;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -59,6 +59,7 @@ public class ProjetoAppDbContext :
     public DbSet<ProjectTask> ProjectTasks { get; set; }
     public DbSet<TaskHistory> TaskHistories { get; set; }
     public DbSet<TaskComment> TaskComments { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
     public ProjetoAppDbContext(DbContextOptions<ProjetoAppDbContext> options)
         : base(options)
@@ -144,5 +145,15 @@ public class ProjetoAppDbContext :
             b.HasIndex(x => x.ProjectId);
         });
 
+
+
+        builder.Entity<Customer>(b =>
+        {
+            b.ToTable(ProjetoAppConsts.DbTablePrefix + "Customers", ProjetoAppConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
     }
 }

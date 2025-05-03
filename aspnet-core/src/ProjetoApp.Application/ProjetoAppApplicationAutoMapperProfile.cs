@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ProjetoApp.Projects.Dtos;
 using ProjetoApp.Domain;
+using ProjetoApp.Domain.Dtos;
 using ProjetoApp.Dtos;
 
 namespace ProjetoApp;
@@ -20,5 +21,7 @@ public class ProjetoAppApplicationAutoMapperProfile : Profile
         CreateMap<TaskHistory, TaskHistoryDto>();
         CreateMap<TaskComment, TaskCommentDto>();
         CreateMap<TaskPerformanceReport, TaskPerformanceReportDto>();
+        CreateMap<Customer, CustomerDto>();
+        CreateMap<CreateUpdateCustomerDto, Customer>(MemberList.Source);
     }
 }
