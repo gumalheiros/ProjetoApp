@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerService } from '../services/customer.service';
-import { CreateUpdateCustomerDto } from '../models/customer';
+import { CustomerService } from '../proxy/domain/customer.service';
+import { CreateUpdateCustomerDto } from '../proxy/domain/dtos';
 
 @Component({
   selector: 'app-customer-detail',
+  standalone: false,
   templateUrl: './customer-detail.component.html'
 })
 export class CustomerDetailComponent implements OnInit {
@@ -72,4 +73,4 @@ export class CustomerDetailComponent implements OnInit {
   navigateToList(): void {
     this.router.navigate(['/customer']);
   }
-} 
+}

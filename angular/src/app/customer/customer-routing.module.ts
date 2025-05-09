@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CustomerComponent } from './customer.component';
-import { CustomerDetailComponent } from './components/customer-detail.component';
+import { CustomerDetailComponent } from './customer-detail.component';
 import { AuthGuard, PermissionGuard } from '@abp/ng.core';
 
 const routes: Routes = [

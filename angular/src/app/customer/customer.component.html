@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="filter()">
+    <form [formGroup]="filterForm" (ngSubmit)="filter()">
       <div class="row mb-3">
         <div class="col-md-6">
           <div class="form-group">
@@ -103,4 +103,33 @@
       </ngx-datatable-column>
     </ngx-datatable>
   </div>
-</div> 
+</div>
+
+<!-- Modal for Create/Edit Customer -->
+<abp-modal [(visible)]="isModalOpen" (onClose)="isModalOpen = false">
+  <ng-template #abpHeader>
+    <h3>{{ selectedCustomer.id ? ('::EditCustomer' | abpLocalization) : ('::NewCustomer' | abpLocalization) }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" class="p-3">
+      <div class="mb-3">
+        <label for="customer-name" class="form-label">{{ '::Name' | abpLocalization }}</label>
+        <input id="customer-name" type="text" class="form-control" formControlName="name" />
+      </div>
+      <div class="mb-3">
+        <label for="customer-birthDate" class="form-label">{{ '::BirthDate' | abpLocalization }}</label>
+        <input id="customer-birthDate" type="date" class="form-control" formControlName="birthDate" />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary me-2" abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="save()">
+      {{ '::Save' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>
